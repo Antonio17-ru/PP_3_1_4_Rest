@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update User</title>
+</head>
+<body>
+<form action="#" th:action="@{/admin/update}" th:object="${user}" method="post">
+    <label for="id">ID</label>
+    <input readonly type="number" th:field="*{id}" id="id" placeholder="ID">
+    </br>
+    </br>
+    <label for="username">User Name</label>
+    <input type="text" th:field="*{username}" id="username" placeholder="User Name">
+    </br>
+    </br>
+    <label for="name">Name</label>
+    <input type="text" th:field="*{name}" id="name" placeholder="Name">
+    </br>
+    </br>
+    <label for="lastName">Last Name</label>
+    <input type="text" th:field="*{lastName}" id="lastName" placeholder="Last Name">
+    </br>
+    </br>
+    <label for="password">Password</label>
+    <input type="text" th:field="*{password}" id="password" placeholder="Password">
+    </br>
+    </br>
+    <label for="age">Age</label>
+    <input type="number" th:field="*{age}" id="age" placeholder="Age">
+    </br>
+    </br>
+    <div class="form-group row">
+        <label class="col-4 col-form-label">Roles: </label>
+        <div class="col-8">
+            <th:block th:each="role: ${listRoles}">
+                <input type="checkbox" th:field="*{roles}"
+                       th:text="${role.name}" th:value="${role.id}" class="m-2" />
+            </th:block>
+        </div>
+    </div>
+    <input type="submit" value="Update">
+
+</form>
+<a th:href="@{/logout}">Logout</a>
+</body>
+</html>

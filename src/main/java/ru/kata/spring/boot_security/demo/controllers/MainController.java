@@ -1,13 +1,16 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.repository.UserRepository;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -15,31 +18,31 @@ import java.util.List;
 public class MainController {
 
     private final UserService userService;
+    private final UserRepository userRepository;
 
     @Autowired
-    public MainController(UserService userService) {
+    public MainController(UserService userService,
+                          UserRepository userRepository) {
+        this.userRepository = userRepository;
         this.userService = userService;
     }
 
-    @GetMapping("/{id}")
-    public String allUser(@PathVariable("id") int id, Model model) {
-        model.addAttribute("users", userService.findById(id));
-        return "admin";
-    }
+//   @GetMapping("/{id}")
+//   public String allUser(@PathVariable("id") int id, Model model) {
+//       model.addAttribute("user", userService.findById(id));
+//       return "admin";
+//   }
 
     @GetMapping()
-    public String showAllUsers(Model model) {
+    public String showAllUsers(Model model, Principal principal) {
         List<User> users = userService.findAll();
+        List<Role> listRoles = userService.listRoles();
+        model.addAttribute("userRep", userRepository.findByUsername(principal.getName()));
         model.addAttribute("users", users);
         model.addAttribute("user.roles", users);
-        return "admin";
-    }
-
-    @GetMapping("/create")
-    public String createUserForm(User user, Model model) {
-        List<Role> listRoles = userService.listRoles();
+        model.addAttribute("userObj", new User());
         model.addAttribute("listRoles", listRoles);
-        return "create";
+        return "admin";
     }
 
     @PostMapping("/create")
@@ -48,23 +51,16 @@ public class MainController {
         return "redirect:/admin";
     }
 
-    @GetMapping("/delete/{id}")
-    public String deleteUser(@PathVariable("id") int id) {
+    @DeleteMapping("/delete/{id}")
+    public String deleteUser(@PathVariable("id") int id, Model model) {
+        List<User> users = userService.findAll();
+        model.addAttribute("users", users);
         userService.deleteById(id);
         return "redirect:/admin";
     }
 
-    @GetMapping("/update/{id}")
-    public String updateUserForm(@PathVariable("id") int id, Model model) {
-        User user = userService.findById(id);
-        List<Role> listRoles = userService.listRoles();
-        model.addAttribute("user", user);
-        model.addAttribute("listRoles", listRoles);
-        return "update";
-    }
-
     @PostMapping("/update")
-    public String updateUser(User user) {
+    public String updateUserForm(@ModelAttribute("user") User user) {
         userService.saveUser(user);
         return "redirect:/admin";
     }

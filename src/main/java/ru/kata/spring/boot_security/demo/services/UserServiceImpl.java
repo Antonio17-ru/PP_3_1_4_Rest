@@ -2,13 +2,14 @@ package ru.kata.spring.boot_security.demo.services;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Service
@@ -36,8 +37,9 @@ public class UserServiceImpl implements UserService {
     public List<User> findAll() {
         return userRepository.findAll();
     }
-    @Transactional
-    public void saveUser(User user) {
+
+    public void saveUser(User user, Set<Role> roles) {
+        user.setRoles(roles);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
@@ -46,9 +48,8 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
-    public List<Role> listRoles() {
-        return roleRepository.findAll();
+    public Set<Role> getAllRoles() {
+        return new HashSet<>(roleRepository.findAll());
     }
-
 
 }

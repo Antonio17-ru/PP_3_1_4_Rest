@@ -1,7 +1,7 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,8 +10,8 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
-import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/admin")
@@ -27,27 +27,26 @@ public class MainController {
         this.userService = userService;
     }
 
-//   @GetMapping("/{id}")
-//   public String allUser(@PathVariable("id") int id, Model model) {
-//       model.addAttribute("user", userService.findById(id));
-//       return "admin";
-//   }
+    @GetMapping("/{id}")
+    public String allUser(@PathVariable("id") int id, Model model) {
+        model.addAttribute("user", userService.findById(id));
+        return "admin";
+    }
 
     @GetMapping()
-    public String showAllUsers(Model model, Principal principal) {
+    public String showAllUsers(Model model, @AuthenticationPrincipal User user) {
         List<User> users = userService.findAll();
-        List<Role> listRoles = userService.listRoles();
-        model.addAttribute("userRep", userRepository.findByUsername(principal.getName()));
+        Set<Role> listRoles = userService.getAllRoles();
         model.addAttribute("users", users);
-        model.addAttribute("user.roles", users);
         model.addAttribute("userObj", new User());
         model.addAttribute("listRoles", listRoles);
+        model.addAttribute("userRep", userRepository.findByUsername(user.getUsername()));
         return "admin";
     }
 
     @PostMapping("/create")
-    public String createUser(User user) {
-        userService.saveUser(user);
+    public String createUser(User user, @RequestParam("listRoles") Set<Role> roles) {
+        userService.saveUser(user, roles);
         return "redirect:/admin";
     }
 
@@ -59,9 +58,9 @@ public class MainController {
         return "redirect:/admin";
     }
 
-    @PostMapping("/update")
-    public String updateUserForm(@ModelAttribute("user") User user) {
-        userService.saveUser(user);
+    @PostMapping("/update/{id}")
+    public String updateUserForm(@ModelAttribute("user") User user, @RequestParam("listRoles") Set<Role> roles) {
+        userService.saveUser(user, roles);
         return "redirect:/admin";
     }
 

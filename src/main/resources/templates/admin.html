@@ -6,15 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-            crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"
-            integrity="sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf"
-            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
 
     <title>Admin panel</title>
 </head>
@@ -28,7 +22,7 @@
                     <div class="container-fluid">
                         <a class="navbar-brand" href="#">
                             <strong><span th:text="${userRep.username}"></span></strong> with roles: <span
-                                ></span></a>
+                                th:text="${userRep.roles}"></span></a>
                         <a class="nav-link text-secondary" href="/logout"><h5>Logout</h5></a>
                     </div>
                 </nav>
@@ -38,9 +32,15 @@
                 <div class="row">
                     <div class="col-2 mt-3 pl-0 pr-0">
                         <!-- pills -->
-                        <nav class="nav flex-column nav-pills bg-white" style="height: 85vh">
-                            <a class="nav-link active" href="/admin">Admin</a>
-                            <a class="nav-link" href="/user">User</a>
+                        <nav class="sidebar">
+                            <ul class="nav flex-column nav-pills bg-white" style="height: 85vh">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="/admin">Admin</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/user">User</a>
+                                </li>
+                            </ul>
                         </nav>
                     </div>
                     <!-- Admin panel -->
@@ -88,8 +88,8 @@
                                                 <td th:text="${user.name}">name</td>
                                                 <td th:text="${user.lastName}">lastName</td>
                                                 <td th:text="${user.age}">age</td>
-                                                <td th:each="role : ${user.roles}">
-                                                    <span th:text="${role.name}"> </span></td>
+                                                <td th:text="${user.roles}">
+                                                    </td>
                                                 <td>
                                                     <button type="button" class="btn btn-info" data-toggle="modal"
                                                             th:attr="data-target=${'#editModal'+user.id}">Edit
@@ -104,18 +104,17 @@
                                             </tbody>
                                         </table>
                                         </br>
-                                        </br>
                                     </div>
                                 </div>
                             </div>
                             <div class="tab-pane" id="create" role="tabpanel">
                                 <div class="d-grid gap-5">
-                                    <div class="p-2 bg-light border">
+                                    <div class="p-2 bg-light border rounded-top">
                                         <h5 class="text-left">New user</h5>
                                     </div>
                                 </div>
                                 <div class="d-grid gap-1">
-                                    <div class="p-2 bg-white border">
+                                    <div class="p-2 bg-white border rounded-bottom">
                                         </br>
                                         <div class="row">
                                             <div class="col-4"></div>
@@ -124,46 +123,48 @@
                                                       th:method="post">
                                                     </br>
                                                     <div class="form-group text-center was-validated">
-                                                        <label for="username">
+                                                        <label for="username1">
                                                             <span class="font-weight-bold">Username</span>
                                                         </label>
-                                                        <input type="text" th:field="*{username}" id="username"
+                                                        <input type="text" th:field="*{username}" id="username1"
                                                                class="form-control is-invalid" placeholder="Username"
                                                                required>
                                                     </div>
                                                     </br>
                                                     <div class="form-group text-center was-validated">
-                                                        <label for="password">
+                                                        <label for="password1">
                                                             <span class="font-weight-bold">Password</span>
                                                         </label>
                                                         <input type="password" th:field="*{password}"
-                                                               class="form-control is-invalid" id="password" required>
+                                                               class="form-control is-invalid" id="password1" required>
                                                     </div>
                                                     </br>
                                                     <div class="form-group text-center was-validated">
-                                                        <label for="name">
+                                                        <label for="name1">
                                                             <span class="font-weight-bold">Name</span>
                                                         </label>
                                                         <input type="text" th:field="*{name}"
-                                                               class="form-control is-invalid" id="name" placeholder="First name"
+                                                               class="form-control is-invalid" id="name1"
+                                                               placeholder="First name"
                                                                required>
                                                     </div>
                                                     </br>
                                                     <div class="form-group text-center was-validated">
-                                                        <label for="lastName">
+                                                        <label for="lastName1">
                                                             <span class="font-weight-bold">Last name</span>
                                                         </label>
-                                                        <input type="text" th:field="*{lastName}" class="form-control is-invalid"
-                                                               id="lastName" placeholder="Last name"
+                                                        <input type="text" th:field="*{lastName}"
+                                                               class="form-control is-invalid"
+                                                               id="lastName1" placeholder="Last name"
                                                                required>
                                                     </div>
                                                     </br>
                                                     <div class="form-group font-weight-bold text-center was-validated">
-                                                        <label for="age">
+                                                        <label for="age1">
                                                             <span class="font-weight-bold">Age</span>
                                                         </label>
                                                         <input type="number" th:field="*{age}"
-                                                               class="form-control is-invalid" id="age"
+                                                               class="form-control is-invalid" id="age1"
                                                                placeholder="Age"
                                                                required>
                                                     </div>
@@ -173,11 +174,9 @@
                                                             <span class="font-weight-bold">Role</span>
                                                         </label>
                                                         <select multiple class="form-control" id="roles"
-                                                                th:field="*{roles}" size="2">
-                                                            <option th:each="role: ${listRoles}"
-                                                                    th:text="${role.name}"
-                                                                    th:value="${role.id}">ADMIN
-                                                            </option>
+                                                                name="listRoles" size="2">
+                                                            <option value="1">USER</option>
+                                                            <option value="2" selected>ADMIN</option>
                                                         </select>
                                                     </div>
                                                     <div class="col text-center">
@@ -211,63 +210,62 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="#" th:action="@{/admin/update}" th:object="${user}" th:method="post">
+                <form action="#" th:action="@{/admin/update/{id}(id=${user.id})}" th:method="post">
                     <div class="form-group text-center">
                         <label for="edId">
                             <span class="font-weight-bold">ID</span>
                         </label>
                         <input type="number" id="edId" class="form-control"
-                               th:value="${user.id}" name="id" disabled>
+                               th:value="${user.getId()}" th:name="id" disabled>
                     </div>
                     <div class="form-group text-center ">
                         <label for="edUsername">
                             <span class="font-weight-bold">Username</span>
                         </label>
                         <input type="text" class="form-control " id="edUsername" placeholder="Username"
-                               th:value="${user.username}">
+                               th:value="${user.getUsername()}" th:name="username">
                     </div>
                     <div class="form-group text-center ">
                         <label for="edPassword">
                             <span class="font-weight-bold">Password</span>
                         </label>
                         <input type="password" class="form-control " id="edPassword"
-                               th:value="${user.getPassword()}">
+                               th:value="${user.getPassword()}" th:name="password">
                     </div>
                     <div class="form-group text-center ">
                         <label for="edName">
                             <span class="font-weight-bold">Name</span>
                         </label>
                         <input type="text" class="form-control " id="edName" placeholder="First name"
-                               th:value="${user.name}">
+                               th:value="${user.getName()}" th:name="name">
                     </div>
                     <div class="form-group text-center ">
                         <label for="edLastName">
                             <span class="font-weight-bold">Last Name</span>
                         </label>
                         <input type="text" class="form-control" id="edLastName" placeholder="Last name"
-                               th:value="${user.lastName}">
+                               th:value="${user.getLastName()}" th:name="lastName">
                     </div>
                     <div class="form-group font-weight-bold text-center">
-                        <label for="age1">
+                        <label for="edAge">
                             <span class="font-weight-bold">Age</span>
                         </label>
-                        <input type="number" class="form-control" id="age1"
-                               th:value="${user.age}">
+                        <input type="number" class="form-control" id="edAge"
+                               th:value="${user.getAge()}" th:name="age">
                     </div>
                     <div class="form-group text-center ">
                         <label for="rolesEdit">
                             <span class="font-weight-bold">Role</span>
                         </label>
                         <select multiple class="form-control" id="rolesEdit"
-                                size="2">
-                            <option th:each="role: ${listRoles}" th:text="${role.name}"
-                                    th:value="${role.id}">ADMIN
-                            </option>
+                                name="listRoles" size="2">
+                            <option value="1">USER</option>
+                            <option value="2" selected>ADMIN</option>
                         </select>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" th:value="Update">Edit
+                        <button type="submit" class="btn btn-primary">Edit
                         </button>
                     </div>
                 </form>
@@ -321,7 +319,7 @@
                         </div>
                         <div class="form-group font-weight-bold text-center">
                             <label for="delAge">
-                                <<span class="font-weight-bold">Age</span>
+                                <span class="font-weight-bold">Age</span>
                             </label>
                             <input type="number" id="delAge" class="form-control"
                                    placeholder="Disabled input" th:value="${user.age}">
@@ -331,9 +329,9 @@
                                 <span class="font-weight-bold">Role</span>
                             </label>
                             <select multiple class="form-control" id="rolesDelete"
-                                    size="2">
-                                <option th:each="role: ${listRoles}" th:text="${role.name}"
-                                        th:value="${role.id}">ADMIN
+                                    name="listRoles" size="2">
+                                <option value="1">USER</option>
+                                <option value="2">ADMIN</option>
                                 </option>
                             </select>
                         </div>
@@ -349,6 +347,14 @@
         </div>
     </div>
 </div>
-
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 </body>
 </html>

@@ -1,32 +1,99 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Spring Security Example</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"
+            integrity="sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf"
+            crossorigin="anonymous"></script>
+
+    <title>Admin panel</title>
 </head>
 <body>
-<h1>User, welcome spring boot security page!</h1>
-<table th:border="1">
-    <thead>
-    <tr>
-        <th>Id</th>
-        <th>User Name</th>
-        <th>Name</th>
-        <th>LastName</th>
-        <th>Password</th>
-        <th>Age</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="user : ${user}">
-        <td th:text="${user.id}">id</td>
-        <td th:text="${user.username}">User name</td>
-        <td th:text="${user.name}">Name</td>
-        <td th:text="${user.lastName}">lastName</td>
-        <td th:text="${user.password}">password</td>
-        <td th:text="${user.age}">age</td>
-    </tr>
-    </tbody>
-</table>
-<a th:href="@{/logout}">Logout</a>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="p-3 mb-2 bg-light text-dark">
+                <!-- Navbar -->
+                <nav class="navbar fixed-top navbar-dark bg-dark">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="#">
+                            <strong><span th:text="${user.username}"></span></strong> with roles: <span
+                                th:each="role : ${user.roles}" th:text="${role.name}" ></span></a>
+                        <a class="nav-link text-secondary" href="/logout"><h5>Logout</h5></a>
+                    </div>
+                </nav>
+                </br>
+                </br>
+                </br>
+                <div class="row">
+                    <div class="col-2 mt-3 pl-0 pr-0">
+                        <!-- pills -->
+                        <nav class="nav flex-column nav-pills bg-white" style="height: 85vh">
+                            <a sec:authorize="hasRole('ROLE_ADMIN')" class="nav-link active" href="/admin">Admin</a>
+                            <a class="nav-link" href="/user">User</a>
+                        </nav>
+                    </div>
+                    <!-- Admin panel -->
+                    <div class="col-md-10 mt-3 pl-3 pr-3">
+                        <h1 class="text-left">
+                            User information-page
+                        </h1>
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="users" role="tabpanel"
+                                 aria-labelledby="users-tab">
+                                <div class="d-grid gap-5">
+                                    <div class="p-2 bg-grey border rounded-top">
+                                        <h5 class="text-left">About user</h5>
+                                    </div>
+                                </div>
+                                <div class="d-grid gap-1">
+                                    <div class="p-2 bg-white border rounded-bottom">
+                                        </br>
+                                        <!-- Table -->
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">Id</th>
+                                                <th scope="col">Username</th>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Last name</th>
+                                                <th scope="col">Age</th>
+                                                <th scope="col">Role</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                <td th:text="${user.id}">id</td>
+                                                <td th:text="${user.username}">username</td>
+                                                <td th:text="${user.name}">name</td>
+                                                <td th:text="${user.lastName}">lastName</td>
+                                                <td th:text="${user.age}">age</td>
+                                                <td th:each="role : ${user.roles}">
+                                                    <span th:text="${role.name}"> </span></td>
+                                            </tbody>
+                                        </table>
+                                        </br>
+                                        </br>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
 </body>
 </html>

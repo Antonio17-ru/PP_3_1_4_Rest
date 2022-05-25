@@ -4,6 +4,7 @@ import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 
 import java.util.List;
+import java.util.Set;
 
 public interface UserService {
 
@@ -11,11 +12,10 @@ public interface UserService {
 
     List<User> findAll();
 
-    void saveUser(User user);
+    void saveUser(User user, Set<Role> roles);
 
     void deleteById(int id);
 
-    List<Role> listRoles();
-
+    Set<Role> getAllRoles();
 
 }

@@ -18,13 +18,13 @@ public class User implements UserDetails {
     private int id;
     @Column(name = "user_name", unique = true)
     private String username;
-
+    @Column(name = "name")
     private String name;
     @Column(name = "last_name")
     private String lastName;
-
+    @Column(name = "password")
     private String password;
-
+    @Column(name = "age")
     private int age;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
@@ -65,4 +65,5 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

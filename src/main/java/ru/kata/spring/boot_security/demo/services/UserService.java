@@ -8,14 +8,15 @@ import java.util.Set;
 
 public interface UserService {
 
-    User findById(int id);
+    User getById(int id);
 
     List<User> findAll();
-
-    void saveUser(User user, Set<Role> roles);
 
     void deleteById(int id);
 
     Set<Role> getAllRoles();
 
+    void saveUser(User user);
+
+    void updateUser(User updatedUser);
 }

@@ -28,8 +28,8 @@ public class MainController {
     }
 
     @GetMapping("/{id}")
-    public String allUser(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", userService.findById(id));
+    public String allUser(@PathVariable int id, Model model) {
+        model.addAttribute("user", userService.getById(id));
         return "admin";
     }
 
@@ -44,24 +44,24 @@ public class MainController {
         return "admin";
     }
 
-    @PostMapping("/create")
-    public String createUser(User user, @RequestParam("listRoles") Set<Role> roles) {
-        userService.saveUser(user, roles);
-        return "redirect:/admin";
-    }
+//  @PostMapping("/create")
+//  public String createUser(User user, @RequestParam("listRoles") Set<Role> roles) {
+//      userService.saveUser(user, roles);
+//      return "redirect:/admin";
+//  }
 
-    @DeleteMapping("/delete/{id}")
-    public String deleteUser(@PathVariable("id") int id, Model model) {
-        List<User> users = userService.findAll();
-        model.addAttribute("users", users);
-        userService.deleteById(id);
-        return "redirect:/admin";
-    }
+//   @DeleteMapping("/delete/{id}")
+//   public String deleteUser(@PathVariable("id") int id, Model model) {
+//       List<User> users = userService.findAll();
+//       model.addAttribute("users", users);
+//       userService.deleteById(id);
+//       return "redirect:/admin";
+//   }
 
-    @PostMapping("/update/{id}")
-    public String updateUserForm(@ModelAttribute("user") User user, @RequestParam("listRoles") Set<Role> roles) {
-        userService.saveUser(user, roles);
-        return "redirect:/admin";
-    }
+//   @PostMapping("/update/{id}")
+//   public String updateUserForm(@ModelAttribute("user") User user, @RequestParam("listRoles") Set<Role> roles) {
+//       userService.saveUser(user, roles);
+//       return "redirect:/admin";
+//   }
 
 }

@@ -44,10 +44,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().csrf().disable();
     }
 
+
     @Override
     public void configure(AuthenticationManagerBuilder amb) {
         amb.authenticationProvider(daoAuthenticationProvider());
     }
+
 
     @Bean
     protected DaoAuthenticationProvider daoAuthenticationProvider() {
